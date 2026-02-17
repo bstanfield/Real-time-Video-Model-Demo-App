@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overshoot Demo</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <h1>Overshoot <span class="header-accent">Demo</span></h1>
+        <div class="status" id="status">
+          <span class="status-dot" id="status-dot"></span>
+          <span id="status-text">Idle</span>
+        </div>
+      </header>
+
+      <main class="main">
+        <!-- Left Panel: Controls -->
+        <section class="panel controls-panel">
+          <h2>Configuration</h2>
+
+          <div class="form-group">
+            <label for="video-input">Upload Video</label>
+            <div class="file-input-wrapper">
+              <input type="file" id="video-input" accept="video/*" />
+              <span class="file-label" id="file-label">Choose a video file...</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="prompt-input">Prompt</label>
+            <textarea id="prompt-input" rows="6" placeholder="What should the AI look for?">You are an expert UX research assistant analyzing a usability test screen recording for a research project. 
+
+**IGNORE THE PICTURE-IN-PICTURE FLOATING ELEMENT.**
+
+Your objective is to flag interesting user behavior and preferences to then pass on to an AI moderator that is talking with the participant.
+
+Not every clip will have interesting behavior, but if it does, flag it with a brief message.
+
+If a clip has nothing interesting, just respond with "--".
+
+If a clip has something interesting, use this format, choosing HIGH/MEDIUM/LOW for the probe based on the urgency.
+
+Context: Descriptive text here.
+Probe: [HIGH/MEDIUM/LOW] Consider asking the user ____.
+
+Example of Probe levels:
+[HIGH] Consider asking the user why selected X option, but then swapped to Y option after.
+
+[MEDIUM] Consider asking the user if they expected the autocomplete to behave in a different way.
+
+[LOW] Consider asking the user if the choices are comprehensive.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="mode-select">Processing Mode</label>
+            <select id="mode-select">
+              <option value="clip">Clip (motion &amp; temporal)</option>
+              <option value="frame">Frame (static analysis)</option>
+            </select>
+          </div>
+
+          <!-- Clip mode options -->
+          <div id="clip-options" class="mode-options">
+            <div class="form-row">
+              <div class="form-group half">
+                <label for="clip-length">Clip Length (s)</label>
+                <input type="number" id="clip-length" value="5" min="0.1" max="60" step="0.1" />
+              </div>
+              <div class="form-group half">
+                <label for="clip-delay">Delay (s)</label>
+                <input type="number" id="clip-delay" value="5" min="0" max="60" step="0.1" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group half">
+                <label for="clip-fps">FPS</label>
+                <input type="number" id="clip-fps" value="30" min="1" max="120" step="1" />
+              </div>
+              <div class="form-group half">
+                <label for="clip-sampling">Sampling Ratio</label>
+                <input type="number" id="clip-sampling" value="1" min="0" max="1" step="0.05" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Frame mode options -->
+          <div id="frame-options" class="mode-options" style="display: none;">
+            <div class="form-group">
+              <label for="frame-interval">Interval (s)</label>
+              <input type="number" id="frame-interval" value="2" min="0.1" max="60" step="0.1" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="model-select">Model <span class="model-status-hint" id="model-status-hint"></span></label>
+            <select id="model-select">
+            </select>
+          </div>
+
+          <div class="button-row">
+            <button id="start-btn" class="btn btn-primary" disabled>Start Processing</button>
+            <button id="stop-btn" class="btn btn-danger" disabled>Stop</button>
+          </div>
+
+          <div class="form-group">
+            <label>Video Preview</label>
+            <div class="video-wrapper">
+              <video id="video-preview" muted playsinline></video>
+              <div class="video-placeholder" id="video-placeholder">No video selected</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right Panel: Results -->
+        <section class="panel results-panel">
+          <div class="results-header">
+            <h2>Results</h2>
+            <div class="results-actions">
+              <span class="result-count" id="result-count">0 results</span>
+              <button id="copy-btn" class="btn btn-small">Copy</button>
+              <button id="clear-btn" class="btn btn-small">Clear</button>
+            </div>
+          </div>
+          <div class="results-log" id="results-log">
+            <div class="results-empty" id="results-empty">
+              Results will appear here once processing starts...
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
