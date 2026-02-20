@@ -3,13 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Overshoot Demo</title>
+    <title>Real-time Video Model Demo</title>
     <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
     <div class="app">
       <header class="header">
-        <h1>Overshoot <span class="header-accent">Demo</span></h1>
+        <h1>Video <span class="header-accent">AI</span></h1>
+        <div class="engine-tabs">
+          <button class="engine-tab active" data-engine="overshoot">Overshoot</button>
+          <button class="engine-tab" data-engine="gemini">Gemini</button>
+        </div>
         <div class="status" id="status">
           <span class="status-dot" id="status-dot"></span>
           <span id="status-text">Idle</span>
@@ -54,50 +58,68 @@ Example of Probe levels:
 [LOW] Consider asking the user if the choices are comprehensive.</textarea>
           </div>
 
-          <div class="form-group">
-            <label for="mode-select">Processing Mode</label>
-            <select id="mode-select">
-              <option value="clip">Clip (motion &amp; temporal)</option>
-              <option value="frame">Frame (static analysis)</option>
-            </select>
-          </div>
-
-          <!-- Clip mode options -->
-          <div id="clip-options" class="mode-options">
-            <div class="form-row">
-              <div class="form-group half">
-                <label for="clip-length">Clip Length (s)</label>
-                <input type="number" id="clip-length" value="5" min="0.1" max="60" step="0.1" />
-              </div>
-              <div class="form-group half">
-                <label for="clip-delay">Delay (s)</label>
-                <input type="number" id="clip-delay" value="5" min="0" max="60" step="0.1" />
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group half">
-                <label for="clip-fps">FPS</label>
-                <input type="number" id="clip-fps" value="30" min="1" max="120" step="1" />
-              </div>
-              <div class="form-group half">
-                <label for="clip-sampling">Sampling Ratio</label>
-                <input type="number" id="clip-sampling" value="1" min="0" max="1" step="0.05" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Frame mode options -->
-          <div id="frame-options" class="mode-options" style="display: none;">
+          <!-- Overshoot-specific config -->
+          <div id="overshoot-config" class="engine-config">
             <div class="form-group">
-              <label for="frame-interval">Interval (s)</label>
-              <input type="number" id="frame-interval" value="2" min="0.1" max="60" step="0.1" />
+              <label for="mode-select">Processing Mode</label>
+              <select id="mode-select">
+                <option value="clip">Clip (motion &amp; temporal)</option>
+                <option value="frame">Frame (static analysis)</option>
+              </select>
+            </div>
+
+            <!-- Clip mode options -->
+            <div id="clip-options" class="mode-options">
+              <div class="form-row">
+                <div class="form-group half">
+                  <label for="clip-length">Clip Length (s)</label>
+                  <input type="number" id="clip-length" value="5" min="0.1" max="60" step="0.1" />
+                </div>
+                <div class="form-group half">
+                  <label for="clip-delay">Delay (s)</label>
+                  <input type="number" id="clip-delay" value="5" min="0" max="60" step="0.1" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group half">
+                  <label for="clip-fps">FPS</label>
+                  <input type="number" id="clip-fps" value="30" min="1" max="120" step="1" />
+                </div>
+                <div class="form-group half">
+                  <label for="clip-sampling">Sampling Ratio</label>
+                  <input type="number" id="clip-sampling" value="1" min="0" max="1" step="0.05" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Frame mode options -->
+            <div id="frame-options" class="mode-options" style="display: none;">
+              <div class="form-group">
+                <label for="frame-interval">Interval (s)</label>
+                <input type="number" id="frame-interval" value="2" min="0.1" max="60" step="0.1" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="model-select">Model <span class="model-status-hint" id="model-status-hint"></span></label>
+              <select id="model-select">
+              </select>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="model-select">Model <span class="model-status-hint" id="model-status-hint"></span></label>
-            <select id="model-select">
-            </select>
+          <!-- Gemini-specific config -->
+          <div id="gemini-config" class="engine-config" style="display: none;">
+            <div class="form-group">
+              <label for="gemini-model">Model</label>
+              <select id="gemini-model">
+                <option value="gemini-2.5-flash-native-audio-preview-12-2025" selected>Gemini 2.5 Flash (video only)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="gemini-fps">Frame Interval (s)</label>
+              <input type="number" id="gemini-fps" value="1" min="0.5" max="5" step="0.5" />
+            </div>
           </div>
 
           <div class="button-row">

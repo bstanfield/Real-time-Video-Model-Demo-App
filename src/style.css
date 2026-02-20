@@ -65,6 +65,43 @@ html, body {
   color: var(--accent);
 }
 
+/* Engine Tabs */
+.engine-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-input);
+  border-radius: var(--radius);
+  padding: 3px;
+}
+
+.engine-tab {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font);
+  color: var(--text-muted);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.engine-tab:hover {
+  color: var(--text);
+}
+
+.engine-tab.active {
+  color: var(--text);
+  background: var(--bg-panel);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.engine-tab[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .status {
   display: flex;
   align-items: center;
@@ -442,6 +479,11 @@ select option:disabled {
 .result-badge.mode-frame {
   background: rgba(245, 158, 11, 0.15);
   color: var(--warning);
+}
+
+.result-badge.mode-gemini {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
 }
 
 .result-timestamp {
